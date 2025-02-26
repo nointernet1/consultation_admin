@@ -88,14 +88,23 @@ cd telegram-bot-client</code></pre>
 <h2>🖥 Использование</h2>
 
 <ol>
+  
+    
+  <img src="https://github.com/user-attachments/assets/901cd0ba-aa3d-4075-90a1-5ad1f8b36f89">
+  <img src="https://github.com/user-attachments/assets/47742977-992e-41d2-900c-eb196d8caa7d">
+  <img src="https://github.com/user-attachments/assets/fa1087d6-2425-42da-87a0-c6bd870a6506">
+
   <li><strong>Вход</strong>:
-    ![image](https://github.com/user-attachments/assets/901cd0ba-aa3d-4075-90a1-5ad1f8b36f89)
     <ul>
+    
       <li>Перейдите на страницу входа.</li>
       <li>Введите токен вашего Telegram-бота.</li>
     </ul>
+    
   </li>
+  
   <li><strong>Список чатов</strong>:
+    
     <ul>
       <li>После входа вы увидите список всех чатов.</li>
       <li>Нажмите на чат, чтобы открыть переписку.</li>
