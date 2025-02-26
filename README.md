@@ -89,6 +89,7 @@ cd telegram-bot-client</code></pre>
 
 <ol>
   <li><strong>Вход</strong>:
+    ![image](https://github.com/user-attachments/assets/901cd0ba-aa3d-4075-90a1-5ad1f8b36f89)
     <ul>
       <li>Перейдите на страницу входа.</li>
       <li>Введите токен вашего Telegram-бота.</li>
