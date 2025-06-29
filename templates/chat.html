@@ -5,15 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ chat.title }} - Telegram Client</title>
     <link rel="stylesheet" href="/static/css/style.css">
+    <script>
+        // Автопрокрутка вниз при загрузке страницы
+        window.onload = function() {
+            scrollToBottom();
+            startAutoRefresh();
+        };
+        
+        function scrollToBottom() {
+            const container = document.querySelector('.messages-container');
+            container.scrollTop = container.scrollHeight;
+        }
+        
+        // Автоматическое обновление каждые 10 секунд
+        function startAutoRefresh() {
+            setInterval(function() {
+                fetch(/chat/{{ chat.id }})
+                    .then(response => response.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const newDoc = parser.parseFromString(html, 'text/html');
+                        const newMessages = newDoc.querySelector('.messages-container').innerHTML;
+                        document.querySelector('.messages-container').innerHTML = newMessages;
+                        scrollToBottom();
+                    });
+            }, 10000); // 10 секунд
+        }
+    </script>
 </head>
 <body class="dark-theme">
     <div class="container">
-        
         <div class="main">
             <header class="chat-header">
                 <a href="/chats" class="btn back">⬅️</a>
                 <h2>{{ chat.title }}</h2>
-                <a href="{{ url_for('chat', chat_id=chat.id) }}" class="btn refresh">🔄</a>
+                <a href="/chat/{{ chat.id }}" class="btn refresh">🔄</a>
             </header>
             
             <div class="messages-container">
@@ -27,8 +53,8 @@
                 {% endfor %}
             </div>
             
-            <form class="message-input" method="POST">
-                <input type="text" name="text" placeholder="Введите сообщение..." autofocus>
+            <form class="message-input" action="/chat/{{ chat.id }}" method="POST" onsubmit="scrollToBottom()">
+                <input type="text" name="text" placeholder="Введите сообщение..." autofocus required>
                 <button type="submit" class="btn send">➡️</button>
             </form>
         </div>

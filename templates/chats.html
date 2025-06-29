@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Чаты</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
 </head>
 <body class="dark-theme">
     <div class="container">
@@ -18,10 +18,14 @@
             </header>
             <div class="chat-list">
                 {% for chat in chats %}
-                <a href="{{ url_for('chat', chat_id=chat.id) }}" class="chat-item {% if chat.unread %}unread{% endif %}">
+                <a href="/chat/{{ chat.id }}" class="chat-item {% if chat.unread %}unread{% endif %}">
                     <div class="chat-info">
                         <h3>{{ chat.title }}</h3>
-                        <p class="last-message">{{ chat.last_message|truncate(30) }}</p>
+                        <p class="last-message">
+                            {% if chat.last_message %}
+                                {{ chat.last_message[:30] }}{% if chat.last_message|length > 30 %}...{% endif %}
+                            {% endif %}
+                        </p>
                     </div>
                     {% if chat.unread %}<span class="badge">{{ chat.unread }}</span>{% endif %}
                 </a>

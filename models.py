@@ -1,27 +1,19 @@
-# models.py
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, Text
-from sqlalchemy.ext.declarative import declarative_base
+from tortoise import fields, models
 from datetime import datetime
 
-Base = declarative_base()
+class Message(models.Model):
+    id = fields.IntField(pk=True)
+    chat_id = fields.BigIntField()
+    text = fields.TextField()
+    direction = fields.CharField(max_length=10)
+    timestamp = fields.DatetimeField(auto_now_add=True)
 
-class Message(Base):
-    __tablename__ = 'messages'
-    
-    id = Column(Integer, primary_key=True)
-    chat_id = Column(Integer)
-    text = Column(Text)
-    direction = Column(String(10))
-    timestamp = Column(DateTime, default=datetime.now)
+class Chat(models.Model):
+    id = fields.BigIntField(pk=True)
+    title = fields.CharField(max_length=100)
+    last_message = fields.TextField()
+    unread = fields.IntField(default=0)
+    updated = fields.DatetimeField(auto_now=True)
 
-class Chat(Base):
-    __tablename__ = 'chats'
-    
-    id = Column(Integer, primary_key=True)
-    title = Column(String(100))
-    last_message = Column(Text)
-    unread = Column(Integer, default=0)
-    updated = Column(DateTime, default=datetime.now, onupdate=datetime.now)
-
-engine = create_engine('sqlite:///chats.db', connect_args={'check_same_thread': False})
-Base.metadata.create_all(engine)
+    class Meta:
+        table = "chats"
