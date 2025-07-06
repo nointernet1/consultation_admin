@@ -18,17 +18,20 @@
             </header>
             <div class="chat-list">
                 {% for chat in chats %}
-                <a href="/chat/{{ chat.id }}" class="chat-item {% if chat.unread %}unread{% endif %}">
-                    <div class="chat-info">
-                        <h3>{{ chat.title }}</h3>
-                        <p class="last-message">
-                            {% if chat.last_message %}
-                                {{ chat.last_message[:30] }}{% if chat.last_message|length > 30 %}...{% endif %}
-                            {% endif %}
-                        </p>
-                    </div>
-                    {% if chat.unread %}<span class="badge">{{ chat.unread }}</span>{% endif %}
-                </a>
+                <tr>
+                    <td>{{ chat.id }}</td>
+                    <td>{{ chat.title }}</td>
+                    <td>{{ chat.last_message|truncate(30) }}</td>
+                    <td>{{ chat.updated }}</td>
+                    <td>
+                        {% if chat.unread > 0 %}
+                        <span class="badge bg-danger">{{ chat.unread }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="/chat/{{ chat.id }}">View</a>
+                    </td>
+                </tr>
                 {% endfor %}
             </div>
         </div>

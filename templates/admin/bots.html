@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bot Management</title>
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Bot Management</h1>
+        
+        {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+        
+        <h2>Add New Bot</h2>
+        <form method="post" action="/admin/bots">
+            <div class="form-group">
+                <label>Token:</label>
+                <input type="text" name="token" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Name:</label>
+                <input type="text" name="name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Type:</label>
+                <select name="bot_type" class="form-control">
+                    <option value="shop">Shop</option>
+                    <option value="consultation">Consultation</option>
+                    <option value="transcription">Transcription</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Bot</button>
+        </form>
+        
+        <h2>Bot List</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Token</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bot in bots %}
+                <tr>
+                    <td>{{ bot.id }}</td>
+                    <td>{{ bot.name }}</td>
+                    <td>{{ bot.bot_type }}</td>
+                    <td>{{ bot.token[:8] }}...{{ bot.token[-4:] }}</td>
+                    <td>
+                        {% if bot.is_active %}
+                            <span class="badge badge-success">Active</span>
+                        {% else %}
+                            <span class="badge badge-danger">Inactive</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form method="post" action="/admin/bots/{{ bot.id }}/toggle">
+                            {% if bot.is_active %}
+                            <button type="submit" class="btn btn-sm btn-danger">Stop</button>
+                            {% else %}
+                            <button type="submit" class="btn btn-sm btn-success">Start</button>
+                            {% endif %}
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

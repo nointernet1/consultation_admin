@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Управление ботами</title>
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Управление ботами</h1>
+        
+        <div class="card">
+            <h2>Добавить нового бота</h2>
+            <form action="/add_bot" method="post">
+                <div class="form-group">
+                    <label>Токен бота:</label>
+                    <input type="text" name="token" required class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Тип бота:</label>
+                    <select name="bot_type" class="form-control">
+                        <option value="shop">Интернет-магазин</option>
+                        <option value="consultation">Запись на консультации</option>
+                        <option value="transcription">Транскрибация сообщений</option>
+                        <option value="custom">Другой</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Добавить бота</button>
+            </form>
+        </div>
+
+        <h2>Активные боты</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Тип</th>
+                    <th>Токен</th>
+                    <th>Статус</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bot in bots %}
+                <tr>
+                    <td>
+                        {% if bot.bot_type == 'shop' %}
+                            <span class="badge badge-primary">Магазин</span>
+                        {% elif bot.bot_type == 'consultation' %}
+                            <span class="badge badge-info">Консультации</span>
+                        {% elif bot.bot_type == 'transcription' %}
+                            <span class="badge badge-success">Транскрибация</span>
+                        {% else %}
+                            <span class="badge badge-secondary">Другой</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ bot.token[:8] }}...{{ bot.token[-4:] }}</td>
+                    <td>
+                        {% if bot.is_active %}
+                            <span class="badge badge-success">Активен</span>
+                        {% else %}
+                            <span class="badge badge-secondary">Неактивен</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if bot.is_active %}
+                            <form action="/remove_bot" method="post" style="display:inline">
+                                <input type="hidden" name="token" value="{{ bot.token }}">
+                                <button type="submit" class="btn btn-sm btn-danger">Остановить</button>
+                            </form>
+                        {% endif %}
+                        <a href="/login?token={{ bot.token }}" class="btn btn-sm btn-primary">Войти</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

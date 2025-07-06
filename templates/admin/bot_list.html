@@ -1,0 +1,36 @@
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for bot in bots %}
+        <tr id="bot-{{ bot.id }}">
+            <td>{{ bot.id }}</td>
+            <td>{{ bot.name }}</td>
+            <td>{{ bot.bot_type }}</td>
+            <td>
+                {% if bot.is_active %}
+                    <span style="color: green">Active</span>
+                {% else %}
+                    <span style="color: red">Inactive</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if bot.is_active %}
+                    <button hx-delete="/bot/{{ bot.id }}" hx-target="#bot-{{ bot.id }}">Stop</button>
+                    <button hx-post="/bot/{{ bot.id }}/restart" hx-target="#bot-{{ bot.id }}">Restart</button>
+                {% else %}
+                    <button hx-post="/bot/{{ bot.id }}/restart">Activate</button>
+                {% endif %}
+                <a href="/login?bot_id={{ bot.id }}">Login</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
